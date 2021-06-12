@@ -4,7 +4,7 @@ const User = require('../model/user');
 
 // Lista de usuários 
 router.get('/', (req, res) => {
-	Users.find({}, (err, data) => {
+	User.find({}, (err, data) => {
 		if(err) return res.send({error:"Error on users consult"});
 		return res.send(data);
 	});
