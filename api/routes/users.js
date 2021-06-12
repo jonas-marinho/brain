@@ -21,9 +21,9 @@ router.post('/auth', (req, res) => {
 });
 
 // Create
-router.post('/create', (req, res) => {
-	User.create({email: "a", password: "a", userID: "a", userToken: "a"});
-	return res.send({message: "usuário criado"});
-});
+// router.post('/create', (req, res) => {
+//	User.create({email: "a", password: "a", userID: "a", userToken: "a"});
+//	return res.send({message: "usuário criado"});
+//});
 
 module.exports = router;
