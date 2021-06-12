@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 
 // Autenticaçao
 router.get('/auth', (req, res) => {
-		return res.send(message:"To get data from this API endpoint, use POST method, passing mail and password as parameters.");
+		return res.send({message:"To get data from this API endpoint, use POST method, passing mail and password as parameters."});
 });
 router.post('/auth', (req, res) => {
 		return res.send("Retornar se o usuário recebeu permissao para logar ou nao");
