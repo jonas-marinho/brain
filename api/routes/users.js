@@ -20,4 +20,10 @@ router.post('/auth', (req, res) => {
 		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou não", "mail":mail, "password":password});
 });
 
+// Create
+router.post('/create', (req, res) => {
+	Users.Create(email: "a", password: "a", userID: "a", userToken: "a");
+	return res.send(message: "usuário criado");
+});
+
 module.exports = router;
