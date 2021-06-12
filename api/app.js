@@ -5,7 +5,7 @@ const port = 8000;
 
 // MongoDB Atlas
 const mongoose = require('mongoose');
-const dbUrl = 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const dbUrl = 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority';
 const dbOptions = {poolSize: 5, useNewUrlParser: true, useUnifiedTopology: true};
 
 mongoose.connect(dbUrl, dbOptions);

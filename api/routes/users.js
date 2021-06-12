@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Users = require('../model/user');
+const User = require('../model/user');
 
 // Lista de usuários 
 router.get('/', (req, res) => {
@@ -22,7 +22,7 @@ router.post('/auth', (req, res) => {
 
 // Create
 router.post('/create', (req, res) => {
-	Users.create({email: "a", password: "a", userID: "a", userToken: "a"});
+	User.create({email: "a", password: "a", userID: "a", userToken: "a"});
 	return res.send({message: "usuário criado"});
 });
 
