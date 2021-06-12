@@ -6,7 +6,7 @@ const port = 8000;
 // MongoDB Atlas
 const mongoose = require('mongoose');
 const dbUrl = 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-const dbOptions = {reconnectTries: Number.MAX_VALUE, reconnectInterval: 500, poolSize: 5, useNewUrlParser: true};
+const dbOptions = {reconnectTries: Number.MAX_VALUE, reconnectInterval: 500, poolSize: 5, useNewUrlParser: true, useUnifiedTopology: true};
 
 mongoose.connect(dbUrl, dbOptions);
 mongoose.set('useCreateIndex', true);

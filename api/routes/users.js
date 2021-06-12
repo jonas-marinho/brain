@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const Users = require('../model/user');
 
-// Mensagem padrao desta rota
+// Lista de usuários 
 router.get('/', (req, res) => {
-		return res.send({message: "brAIn's users API is working correctly!"});
+	Users.find({}, (err, data) => {
+		if(err) return res.send({error:'Error on users consult'};);
+		return res.send(data);
+	});
 });
 
-// Autenticaçao
+// Autenticação
 router.get('/auth', (req, res) => {
 		return res.send({message:"To get data from this API endpoint, use POST method, passing mail and password as parameters."});
 });
