@@ -23,7 +23,7 @@ router.post('/auth', (req, res) => {
 // Create
 router.post('/create', (req, res) => {
 	Users.Create({email: "a", password: "a", userID: "a", userToken: "a"});
-	return res.send(message: "usuário criado");
+	return res.send({message: "usuário criado"});
 });
 
 module.exports = router;
