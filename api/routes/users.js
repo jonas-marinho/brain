@@ -11,7 +11,10 @@ router.get('/auth', (req, res) => {
 		return res.send({message:"To get data from this API endpoint, use POST method, passing mail and password as parameters."});
 });
 router.post('/auth', (req, res) => {
-		return res.send("Retornar se o usuário recebeu permissao para logar ou nao");
+		const mail = req.body.mail;
+		const password = req.body.password;
+		
+		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou nao", "mail":mail, "password":password});
 });
 
 module.exports = router;
