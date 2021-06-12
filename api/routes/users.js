@@ -14,7 +14,7 @@ router.post('/auth', (req, res) => {
 		const mail = req.body.mail;
 		const password = req.body.password;
 		
-		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou nao", "mail":mail, "password":password});
+		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou não", "mail":mail, "password":password});
 });
 
 module.exports = router;
