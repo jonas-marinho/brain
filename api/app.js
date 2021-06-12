@@ -2,9 +2,15 @@ const express = require('express');
 const app = express();
 const port = 8000;
 
-app.get('/', (req, res) => {
-	return res.send({message: "brAIn funcionando com GET"});
-});
+const indexRoute = require('./routes/index');
+const usersRoute = require('./routes/users');
+const patientsRoute = require('./routes/patients');
+const examsRoute = require('./routes/exams');
+
+app.use('/', indexRoute);
+app.use('/users', usersRoute);
+app.use('/patients', patientsRoute);
+app.use('/exams', examsRoute);
 
 app.listen(port);
 
