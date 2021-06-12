@@ -22,7 +22,7 @@ router.post('/auth', (req, res) => {
 
 // Create
 router.post('/create', (req, res) => {
-	Users.Create(email: "a", password: "a", userID: "a", userToken: "a");
+	Users.Create({email: "a", password: "a", userID: "a", userToken: "a"});
 	return res.send(message: "usuário criado");
 });
 
