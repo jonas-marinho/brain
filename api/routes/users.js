@@ -12,18 +12,20 @@ router.get('/', (req, res) => {
 
 // Autenticação
 router.get('/auth', (req, res) => {
-		return res.send({message:"To get data from this API endpoint, use POST method, passing mail and password as parameters."});
+		return res.send({message:"To get data from this API endpoint, use POST method, passing email and password as parameters."});
 });
 router.post('/auth', (req, res) => {
-		const {mail, password} = req.body;
+		const {email, password} = req.body;
 		
-		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou não", "mail":mail, "password":password});
+		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou não", "email":email, "password":password});
 });
 
 // Create
-// router.post('/create', (req, res) => {
-//	User.create({email: "a", password: "a", userID: "a", userToken: "a"});
-//	return res.send({message: "usuário criado"});
-//});
+router.post('/create', (req, res) => {
+	const {email, password} = req.body;
+	
+	User.create({email: email, password: password, userID: "a", userToken: "a"});
+	return res.send({message: "The user has been created"});
+});
 
 module.exports = router;
