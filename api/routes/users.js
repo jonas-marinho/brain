@@ -24,8 +24,16 @@ router.post('/auth', (req, res) => {
 router.post('/create', (req, res) => {
 	const {email, password} = req.body;
 	
-	User.create({email: email, password: password, userID: "a", userToken: "a"});
-	return res.send({message: "The user has been created"});
+	if (!email || !password) return res.send({error: "There are fields that are not filled"});
+	
+	User.findOne({email}, (err, data) => {
+		if(err) return res.send({error: "Error searching for user"});
+		if(data) return res.send({error: "The user already exists"});
+		User.create({email: email, password: password, userID: "a", userToken: "a"}, (err, data) => {
+			if(err) return res.send({error: "Error to create user"});
+			return res.send(data);
+		});
+	});
 });
 
 module.exports = router;
