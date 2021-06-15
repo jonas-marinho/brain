@@ -13,7 +13,7 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', function(next){
 	let user = this;
-	if(!user.isModified('password') return next();
+	if(!user.isModified('password')) return next();
 	
 	bcrypt.hash(user.password, 10, (err, encrypted) => {
 		user.password = encrypted;
@@ -23,7 +23,7 @@ UserSchema.pre('save', function(next){
 
 UserSchema.pre('save', function(next){
 	let user = this;
-	if(!user.isModified('userToken') return next();
+	if(!user.isModified('userToken')) return next();
 	
 	bcrypt.hash(user.userToken, 10, (err, encrypted) => {
 		user.userToken = encrypted;
