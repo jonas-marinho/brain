@@ -16,9 +16,20 @@ router.get('/auth', (req, res) => {
 		return res.send({message:"To get data from this API endpoint, use POST method, passing email and password as parameters."});
 });
 router.post('/auth', (req, res) => {
-		const {email, password} = req.body;
-		
-		return res.send({message:"Retornar se o usuário recebeu permissao para logar ou não", "email":email, "password":password});
+	const {email, password} = req.body;
+	if (!email || !password) return res.send({ error: 'Send email and password' });
+
+    Users.findOne({email}, (err, data) => {
+        if (err) return res.send({ error: 'Error finding user' });
+        if (!data) return res.send({ error: 'This email is not registered' });
+
+        bcrypt.compare(password, data.password, (err, same) => {
+            if (!same) return res.send({ error: 'The password is wrong' });
+
+            data.password = undefined;
+            return res.send(data);
+        })
+    }).select('+password');
 });
 
 // Create
