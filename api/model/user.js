@@ -13,17 +13,22 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', function(next){
 	let user = this;
-	if(!user.isModified('password') || !user.isModified('userToken')) return next();
+	if(!user.isModified('password') return next();
 	
 	bcrypt.hash(user.password, 10, (err, encrypted) => {
 		user.password = encrypted;
+		return next();
 	});
+});
+
+UserSchema.pre('save', function(next){
+	let user = this;
+	if(!user.isModified('userToken') return next();
 	
 	bcrypt.hash(user.userToken, 10, (err, encrypted) => {
 		user.userToken = encrypted;
+		return next();
 	});
-	
-	return next();
 });
 
 module.exports = mongoose.model('User', UserSchema);
