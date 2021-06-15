@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../model/user');
+const bcrypt = require('bcrypt');
 
 // Lista de usuários 
 router.get('/', (req, res) => {
@@ -29,7 +30,7 @@ router.post('/create', (req, res) => {
 	User.findOne({email}, (err, data) => {
 		if(err) return res.send({error: "Error searching for user"});
 		if(data) return res.send({error: "The user already exists"});
-		User.create({email: email, password: password, name:name, userID:0, userToken:"a"}, (err, data) => {
+		User.create({email: email, password: password, name:name}, (err, data) => {
 			if(err) return res.send({error: "Error to create user: " + err});
 			return res.send(data);
 		});
