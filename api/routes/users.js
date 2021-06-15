@@ -24,8 +24,7 @@ router.post('/auth', (req, res) => {
 router.post('/create', (req, res) => {
 	const {email, password} = req.body;
 	
-	//if (!email || !password) return res.send({error: "There are fields that are not filled"});
-	if (!email || !password) return res.send(req.body);
+	if (!email || !password) return res.send({error: "There are fields that are not filled"});
 	
 	User.findOne({email}, (err, data) => {
 		if(err) return res.send({error: "Error searching for user"});

@@ -1,5 +1,6 @@
 // Node Express
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 8000;
 
@@ -22,9 +23,9 @@ mongoose.connection.on('connected', () => {
 });
 
 // Body Parser
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 // routes
 const indexRoute = require('./routes/index');
