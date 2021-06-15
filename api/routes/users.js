@@ -22,14 +22,14 @@ router.post('/auth', (req, res) => {
 
 // Create
 router.post('/create', (req, res) => {
-	const {email, password} = req.body;
+	const {email, password, name} = req.body;
 	
-	if (!email || !password) return res.send({error: "There are fields that are not filled"});
+	if (!email || !password || !name) return res.send({error: "There are fields that are not filled"});
 	
 	User.findOne({email}, (err, data) => {
 		if(err) return res.send({error: "Error searching for user"});
 		if(data) return res.send({error: "The user already exists"});
-		User.create({email: email, password: password, userID: "a", userToken: "a"}, (err, data) => {
+		User.create({email: email, password: password, name:name, userID:0, userToken:""}, (err, data) => {
 			if(err) return res.send({error: "Error to create user"});
 			return res.send(data);
 		});
