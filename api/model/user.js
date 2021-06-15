@@ -34,7 +34,7 @@ UserSchema.pre('save', function(next){
 });
 
 // Calculate the userID auto increment
-UserSchema.pre('save', function (next) {
+/*UserSchema.pre('save', function (next) {
 	let user = this;
 	if(!(user.userID!=0)) return next();
 	mongoose
@@ -44,6 +44,6 @@ UserSchema.pre('save', function (next) {
 			user.userID = counter + 1;
 			next();
 		});
-});
+});*/
 
 module.exports = mongoose.model('User', UserSchema);
