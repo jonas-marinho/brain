@@ -19,7 +19,7 @@ router.post('/auth', (req, res) => {
 	const {email, password} = req.body;
 	if (!email || !password) return res.send({ error: 'Send email and password' });
 
-    Users.findOne({email}, (err, data) => {
+    User.findOne({email}, (err, data) => {
         if (err) return res.send({ error: 'Error finding user' });
         if (!data) return res.send({ error: 'This email is not registered' });
 
