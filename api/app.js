@@ -1,8 +1,13 @@
 // Node Express
 const express = require('express');
+// Body Parser
 const bodyParser = require('body-parser');
+// HTTPS
+const https = require('https');
+const fs = require('fs');
+
 const app = express();
-const port = 8000;
+const port = 443;
 
 // MongoDB Atlas
 const mongoose = require('mongoose');
@@ -38,6 +43,14 @@ app.use('/users', usersRoute);
 app.use('/patients', patientsRoute);
 app.use('/exams', examsRoute);
 
-app.listen(port);
+//app.listen(port);
+
+const httpsServer = https.createServer({
+	        key: fs.readFileSync('key.pem'),
+	        cert: fs.readFileSync('cert.pem')
+}, app);
+httpsServer.listen(port, () => {
+	console.log('HTTPS Server running on port ' + port);
+});
 
 module.exports = app;
