@@ -4,48 +4,58 @@ const User = require('../model/user');
 const bcrypt = require('bcrypt');
 
 // Lista de usuários 
-router.get('/', (req, res) => {
-	User.find({}, (err, data) => {
-		if(err) return res.send({error:"Error on users consult"});
-		return res.send(data);
-	});
+router.get('/', async (req, res) => {
+	try {
+		const users = await User.find({});
+		return res.send(users);
+	}
+	catch (err) {
+		return res.send({error:"Error on users consult"});
+	}
 });
 
 // Autenticação
 router.get('/auth', (req, res) => {
 		return res.send({message:"To get data from this API endpoint, use POST method, passing email and password as parameters."});
+	}
 });
-router.post('/auth', (req, res) => {
+router.post('/auth', async (req, res) => {
 	const {email, password} = req.body;
-	if (!email || !password) return res.send({ error: 'Send email and password' });
-
-    User.findOne({email}, (err, data) => {
-        if (err) return res.send({ error: 'Error finding user' });
-        if (!data) return res.send({ error: 'This email is not registered' });
-
-        bcrypt.compare(password, data.password, (err, same) => {
-            if (!same) return res.send({ error: 'The password is wrong' });
-
-            data.password = undefined;
-            return res.send(data);
-        })
-    }).select('+password');
+	if (!email || !password) return res.send({ error: 'Send an email and a password' });
+	
+	try {
+		const user = await User.findOne({email}).select('+password');
+		if (!user) return res.send({ error: 'This email is not registered' });
+		
+		const rightPassword = await bcrypt.compare(password, user.password);
+		
+		if(!rightPassword) return res.send({ error: 'The password is wrong' });
+		
+		user.password = undefined;
+		return res.send(user);
+		
+    }
+	catch (err) {
+		return res.send({ error: 'Error finding user' });
+	}
 });
 
 // Create
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
 	const {email, password, name} = req.body;
 	
 	if (!email || !password || !name) return res.send({error: "There are fields that are not filled"});
 	
-	User.findOne({email}, (err, data) => {
-		if(err) return res.send({error: "Error searching for user"});
-		if(data) return res.send({error: "The user already exists"});
-		User.create({email: email, password: password, name:name}, (err, data) => {
-			if(err) return res.send({error: "Error to create user: " + err});
-			return res.send(data);
-		});
-	});
+	try {
+		if(await User.findOne({email})) return res.send({error: "The user already exists"});
+		
+		createdUser = await User.create({email: email, password: password, name:name});
+		createdUser.password = undefined;
+		return res.send(createdUser);
+	}
+	catch (err) {
+		return res.send({error: "Error searching for user"});
+	}
 });
 
 module.exports = router;
