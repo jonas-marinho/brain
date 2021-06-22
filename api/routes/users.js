@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
 // Autenticação
 router.get('/auth', (req, res) => {
 		return res.send({message:"To get data from this API endpoint, use POST method, passing email and password as parameters."});
-	}
 });
 router.post('/auth', async (req, res) => {
 	const {email, password} = req.body;
