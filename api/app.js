@@ -44,10 +44,9 @@ app.use('/patients', patientsRoute);
 app.use('/exams', examsRoute);
 
 //app.listen(port);
-
 const httpsServer = https.createServer({
-	        key: fs.readFileSync('key.pem'),
-	        cert: fs.readFileSync('cert.pem')
+	        key: fs.readFileSync('brain/api/key.pem'),
+	        cert: fs.readFileSync('brain/api/cert.pem')
 }, app);
 httpsServer.listen(port, () => {
 	console.log('HTTPS Server running on port ' + port);
