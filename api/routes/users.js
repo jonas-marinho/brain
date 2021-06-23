@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
 
-// Lista de usuários 
+// Lista de usuários
 router.get('/', async (req, res) => {
 	try {
 		const users = await User.find({});
@@ -39,7 +39,10 @@ router.post('/auth', async (req, res) => {
 	}
 });
 
-// Create
+// Criar novo usuário
+router.get('/create', (req, res) => {
+		return res.status(400).send({message:"To create a new user, use the post method passing a JSON with name, password and name"});
+});
 router.post('/create', async (req, res) => {
 	const {email, password, name} = req.body;
 	
