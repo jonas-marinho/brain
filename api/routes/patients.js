@@ -24,7 +24,7 @@ router.post('/create', async (req, res) => {
 	if (!name || !birthDate) return res.status(400).send({error: "There are required fields (name and birthDate) that are not filled"});
 	
 	try {		
-		createdPatient = await Patient.create({name: name, birthDate: birthDate, diseases: diseases.toText(), info: info});
+		createdPatient = await Patient.create({name: name, birthDate: birthDate, diseases: diseases, info: info});
 		return res.status(201).send(createdPatient);
 	}
 	catch (err) {
