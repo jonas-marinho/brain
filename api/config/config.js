@@ -2,7 +2,7 @@ const dev = false;
 var env = process.env.NODE_ENV || dev;
 env = 'dev';
 
-const config = () => {
+const config = (env) => {
 	switch (env) {
 		case 'dev':
 		return {
