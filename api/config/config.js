@@ -1,6 +1,4 @@
-const dev = false;
-var env = process.env.NODE_ENV || dev;
-env = 'dev';
+var env = process.env.NODE_ENV || 'dev';
 
 const config = () => {
 	switch (env) {
@@ -19,7 +17,7 @@ const config = () => {
 	}
 }
 
-module.exports = config;
-
-console.log("Iniciando a API em ambiente ${env.toUpperCase()}");
+console.log(`Iniciando a API em ambiente ${env.toUpperCase()}`);
 console.log(config.bd_string);
+
+module.exports = config();
