@@ -18,6 +18,7 @@ const config = () => {
 	}
 }
 
-console.log('Iniciando a API em ambiente ${env.toUpperCase()}');
+console.log("Iniciando a API em ambiente ${env.toUpperCase()}");
+console.log(config.bd_string);
 
 module.exports = config;
