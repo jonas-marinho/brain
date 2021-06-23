@@ -1,3 +1,4 @@
+const dev = false;
 const env = process.env.NODE_ENV || dev;
 
 const config = () => {
