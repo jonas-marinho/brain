@@ -1,5 +1,6 @@
 const dev = false;
 const env = process.env.NODE_ENV || dev;
+env = 'dev';
 
 const config = () => {
 	switch (env) {
