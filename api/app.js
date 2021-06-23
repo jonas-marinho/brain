@@ -6,12 +6,14 @@ const bodyParser = require('body-parser');
 const https = require('https');
 const fs = require('fs');
 
+const config = require('./config/config');
+
 const app = express();
 const port = 443;
 
 // MongoDB Atlas
 const mongoose = require('mongoose');
-const dbUrl = 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority';
+const dbUrl = config.bd_string;
 const dbOptions = {poolSize: 5, useNewUrlParser: true, useUnifiedTopology: true};
 
 mongoose.connect(dbUrl, dbOptions);
