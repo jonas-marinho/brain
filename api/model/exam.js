@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const ExamSchema = new Schema({
-	patientId: {type: String, required: true},
+	patientID: {type: String, required: true},
 	examData: {type: String, required: true},
 	aneurysmProb: {type: Number, default: null},
 	aneurysmLabel: {type: Boolean, required: true},
