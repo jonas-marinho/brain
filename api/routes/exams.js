@@ -5,7 +5,7 @@ const Patient = require('../model/patient');
 const bcrypt = require('bcrypt');
 
 // Lista de exames
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 	try {
 		const exams = await Exam.find({});
 		return res.send(exams);
