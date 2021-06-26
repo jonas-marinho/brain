@@ -45,7 +45,8 @@ router.post('/edit', async (req, res) => {
 	try {
 		var editedPatient = await Patient.findOne({"_id": id});
 		if(!editedPatient) return res.status(400).send({error: "This patient id does not exist"});
-		editedPatient = await Patient.updateOne({"_id": id}, {name: name, birthDate: birthDate, diseases: diseases, info: info});
+		await Patient.updateOne({"_id": id}, {name: name, birthDate: birthDate, diseases: diseases, info: info});
+		editedPatient = await Patient.findOne({"_id": id});
 		return res.status(202).send(editedPatient);
 	}
 	catch (err) {
