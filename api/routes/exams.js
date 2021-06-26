@@ -1,17 +1,38 @@
 ﻿const express = require('express');
 const router = express.Router();
+const Exam = require('../model/exam');
+const Patient = require('../model/patient');
+const bcrypt = require('bcrypt');
 
-// Mensagem padrão desta rota
+// Lista de exames
 router.get('/', (req, res) => {
-		return res.send({message: "brAIn's exams API is working correctly!"});
+	try {
+		const exams = await Exam.find({});
+		return res.send(exams);
+	}
+	catch (err) {
+		return res.status(500).send({error:"Error on exams consult"});
+	}
 });
 
 // Gravação de dados do exame
 router.get('/write', (req, res) => {
-		return res.status(400).send({message:"To save data using this API endpoint, use POST method, passing userID, userToken, patientID, examTimestamp and data (as an unitary JSON) as parameters."});
+		return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with patientID and examData."});
 });
-router.post('/write', (req, res) => {
-		return res.status(501).send("Verificar o userID e user Token; Encontrar o examID a partir do patientID e examTimestamp (criar um examID se não houver ainda); Verificar se o formato dos dados está correto; Salvar os dados do exame; Retornar o examID junto com a resposta 'success' ou 'fail'");
+router.post('/write', async (req, res) => {
+	const {patientID, examData} = req.body;
+	if (!patientID || !examData) return res.status(400).send({error: "The required fields patientID and examData are not filled"});
+	try {
+		const patient = await Patient.findOne({"_id": patientID});
+		if (!patient) return res.status(400).send({error: "The received patientID is not registered"});
+		var aneurysmLabel = false;
+		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
+		createdExam = await Exam.create({patientID: patientID, examData: examData, aneurysmProb: null, aneurysmLabel: aneurysmLabel});
+		return res.status(201).send(createdExam);
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error creating a register for the exam"});
+	}
 });
 
 // Análise do exame
