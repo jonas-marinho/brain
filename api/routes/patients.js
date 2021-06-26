@@ -55,5 +55,23 @@ router.post('/edit', async (req, res) => {
 });
 
 // Excluir paciente
+router.get('/delete', (req, res) => {
+		return res.status(400).send({message:"To delete a patient, use the post method passing a JSON with id"});
+});
+router.post('/delete', async (req, res) => {
+	const {id} = req.body;
+	
+	if (!id) return res.status(400).send({error: "The required field id is not filled"});
+	
+	try {
+		var deletedPatient = await Patient.findOne({"_id": id});
+		if(!deletedPatient) return res.status(400).send({error: "This patient id does not exist"});
+		await Patient.deleteOne({"_id": id});
+		return res.status(202).send(deletedPatient);
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error editing patient"});
+	}
+});
 
 module.exports = router;
