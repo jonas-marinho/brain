@@ -49,7 +49,7 @@ router.get('/label', (req, res) => {
 });
 router.post('/label', async (req, res) => {
 	const {examID, newLabel} = req.body;
-	if(!examID || !newLabel) return res.status(400).send({error: "The required fields examID and newLabel are not filled"});
+	if(!examID || newLabel == undefined) return res.status(400).send({error: "The required fields examID and newLabel are not filled"});
 	
 	try {
 		exam = await Exam.findOne({"_id": examID});
