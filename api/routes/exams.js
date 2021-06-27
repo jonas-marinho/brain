@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
 // Gravação de dados do exame
 router.get('/write', (req, res) => {
-		return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with patientID and examData."});
+	return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with patientID and examData."});
 });
 router.post('/write', async (req, res) => {
 	const {patientID, examData} = req.body;
@@ -45,10 +45,21 @@ router.post('/analysis', (req, res) => {
 
 // Label do exame
 router.get('/label', (req, res) => {
-		return res.status(400).send({message:"To get data from this API endpoint, use POST method, passing userID, userToken, patientID, examID and label as parameters."});
+	return res.status(400).send({message:"To update the aneurysmLabel of the exam, use the POST method passing a JSON with examID and newLabel (boolean)."});
 });
-router.post('/label', (req, res) => {
-		return res.status(501).send("Verificar se os parâmetros recebidos estão corretos; Atualizar o label do exame; Responder se foi atualizado corretamente");
+router.post('/label', async (req, res) => {
+	const {examID, newLabel} = req.body;
+	
+	try {
+		exam = await Exam.findOne({"_id": examID});
+		if(!exam) return res.status(400).send({error: "This examID does not exist"});
+		await Exam.updateOne({"_id": examID}, {"aneurysmLabel": newLabel});
+		exam = await Exam.findOne({"_id": examID});
+		return res.status(202).send(exam);
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error editing exam"});
+	}
 });
 
 module.exports = router;
