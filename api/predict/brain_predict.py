@@ -1,3 +1,6 @@
+import os
+# Para não exibir as mensagens do TensorFlow
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import sys
 import tensorflow
 from tensorflow import keras
