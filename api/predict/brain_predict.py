@@ -1,13 +1,13 @@
 import sys
 import tensorflow
 from tensorflow import keras
-from keras.models import model_from_json
+from tensorflow.keras.models import model_from_json
 import numpy as np
 
 import sklearn
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Conv1D, AveragePooling1D, Flatten, Reshape, LSTM
-from keras.losses import MeanAbsoluteError
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Conv1D, AveragePooling1D, Flatten, Reshape, LSTM
+from tensorflow.keras.losses import MeanAbsoluteError
 
 # Ler os dados que são passados como parâmetro
 rawData = str(sys.argv[1])
