@@ -10,7 +10,11 @@ from tensorflow.keras.layers import Dense, Dropout, Conv1D, AveragePooling1D, Fl
 from tensorflow.keras.losses import MeanAbsoluteError
 
 # Ler os dados que são passados como parâmetro
-rawData = str(sys.argv[1])
+if len(sys.argv) == 2:
+    raw_data = str(sys.argv[1])
+else:
+    print('{"error":"There are no data received"}')
+    
 
 # Transformar a string em uma matriz
 raw_data = raw_data.split(';')
