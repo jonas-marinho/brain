@@ -52,6 +52,7 @@ router.post('/analysis', async (req, res) => {
 		return res.status(500).send({error: "Error analysing exam"});
 	}
 	
+	var analysis = '';
 	const {exec} = require("child_process");
 	exec('python3 brain/api/predict/brain_predict.py "' + data + '"', (error, stdout, stderr) => {
 		if (error) {return res.status(500).send({error: error.message});}
