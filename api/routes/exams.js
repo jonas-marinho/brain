@@ -43,41 +43,22 @@ router.post('/analysis', async (req, res) => {
 	const {examID} = req.body;
 	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
 	
-	
-	
-	
-	
-	const { exec } = require("child_process");
-	exec("python3 brain/api/predict/teste.py", (error, stdout, stderr) => {
-		if (error) {
-			console.log(`error: ${error.message}`);
-			return;
-		}
-		if (stderr) {
-			console.log(`stderr: ${stderr}`);
-			return;
-		}
-		console.log(`stdout: ${stdout}`);
-	});
-	return;
-
-
-
-
-
 	try {
-//		exam = await Exam.findOne({"_id": examID});
-//		if(!exam) return res.status(400).send({error: "This examID does not exist"});
-//		data = exam.examData;
-//		return res.send(data);
-		analysis = await examAnalysis(data);
-		console.log(analysis);
-		return res.send(analysis);
+		exam = await Exam.findOne({"_id": examID});
+		if(!exam) return res.status(400).send({error: "This examID does not exist"});
+		data = exam.examData;
 	}
 	catch (err) {
-		//return res.status(500).send({error: "Error analysing exam"});
-		return res.status(500).send({error: err});
+		return res.status(500).send({error: "Error analysing exam"});
 	}
+	
+	const {exec} = require("child_process");
+	exec('python3 brain/api/predict/brain_predict.py "' + data + '"', (error, stdout, stderr) => {
+		if (error) return res.status(500).send({error: ${error.message}});
+		if (stderr) return res.status(500).send({error: ${stderr}})
+		analysis = ${stdout};
+	});
+	return res.status(200).send(analysis);
 });
 
 // Label do exame
