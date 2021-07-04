@@ -44,10 +44,25 @@ router.post('/analysis', async (req, res) => {
 	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
 
 	module.exports.examAnalysis = function(data, callback){
-		execute('python3 api/predict/teste.py "' + data + '"', function(analysisResult){
+		execute('python3 api/predict/teste.py"' + data + '"', function(analysisResult){
 				callback({result: analysisResult});
 			});
 	};
+	
+	const { exec } = require("child_process");
+
+	exec("python3 api/predict/teste.py", (error, stdout, stderr) => {
+		if (error) {
+			console.log(`error: ${error.message}`);
+			return;
+		}
+		if (stderr) {
+			console.log(`stderr: ${stderr}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+	});
+	return;
 
 
 	try {
