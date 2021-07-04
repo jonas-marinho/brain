@@ -56,7 +56,7 @@ router.post('/analysis', async (req, res) => {
 		data = exam.examData;
 		analysis = await examAnalysis(data);
 		console.log(analysis);
-	}
+	};
 });
 
 // Label do exame
