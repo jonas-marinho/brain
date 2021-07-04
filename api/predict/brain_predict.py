@@ -77,6 +77,16 @@ for row in range(len(data)):
 # Convertendo os dados enriquecidos para o formato np.array
 data = np.array([rich_data], dtype=np.int32)
 
+# Identificar o caminho para o diretório dos arquivos dos modelos
+current_directory = os.getcwd().split('/')
+full_directory = '/home/jonasmarinho/brain/api/predict'.split('/')
+directory_path = ''
+for directory_index in range(len(full_directory)):
+    if directory_index >= len(current_directory):
+        if directory_path != '':
+            directory_path += '/'
+        directory_path += full_directory[directory_index]
+
 # Carregar a arquitetura do modelo classificador
 json_classifier = open('brain_classifier.json', 'r')
 brain_classifier = model_from_json(json_classifier.read())
