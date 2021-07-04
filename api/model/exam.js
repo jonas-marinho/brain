@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 const ExamSchema = new Schema({
 	patientID: {type: String, required: true},
 	examData: {type: String, required: true},
-	aneurysmProb: {type: Number, default: null},
+	aneurysmProbClassifier: {type: Number, default: null},
+	aneurysmProbRegressor: {type: Number, default: null},
 	aneurysmLabel: {type: Boolean, required: true},
 	created: {type: Date, default: Date.now}
 });

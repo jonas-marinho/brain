@@ -54,11 +54,11 @@ router.post('/analysis', async (req, res) => {
 	
 	const {exec} = require("child_process");
 	exec('python3 brain/api/predict/brain_predict.py "' + data + '"', (error, stdout, stderr) => {
-console.log('CLI Instruction: python3 brain/api/predict/brain_predict.py "' + data + '"\n\n');
 		if (error) {return res.status(500).send({error: error.message});}
 		if (stderr) {return res.status(500).send({error: stderr});}
-console.log('Script Response: ' + stdout);
-		return res.status(200).send(stdout);
+		Exam.updateOne({"_id": examID}, {"aneurysmProbClassifier": JSON.parse(stdout).classifier, "aneurysmProbRegressor": JSON.parse(stdout).regressor});
+		exam = Exam.findOne({"_id": examID});
+		return res.status(200).send(exam);
 	});
 });
 
