@@ -44,7 +44,7 @@ router.post('/analysis', async (req, res) => {
 	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
 
 	module.exports.examAnalysis = function(data, callback){
-		execute('python3 api/predict/teste.py"' + data + '"', function(analysisResult){
+		execute('python3 brain/api/predict/teste.py"' + data + '"', function(analysisResult){
 				callback({result: analysisResult});
 			});
 	};
