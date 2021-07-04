@@ -52,14 +52,14 @@ router.post('/analysis', async (req, res) => {
 		return res.status(500).send({error: "Error analysing exam"});
 	}
 	
-	var analysis = '';
 	const {exec} = require("child_process");
 	exec('python3 brain/api/predict/brain_predict.py "' + data + '"', (error, stdout, stderr) => {
+console.log('CLI Instruction: python3 brain/api/predict/brain_predict.py "' + data + '"\n\n');
 		if (error) {return res.status(500).send({error: error.message});}
 		if (stderr) {return res.status(500).send({error: stderr});}
-		analysis = stdout;
+console.log('Script Response: ' + stdout);
+		return res.status(200).send(stdout);
 	});
-	return res.status(200).send(analysis);
 });
 
 // Label do exame
