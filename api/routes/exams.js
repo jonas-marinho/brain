@@ -37,10 +37,26 @@ router.post('/write', async (req, res) => {
 
 // Análise do exame
 router.get('/analysis', (req, res) => {
-		return res.status(400).send({message:"To get data from this API endpoint, use POST method, passing userID, userToken, patientID and examID as parameters."});
+		return res.status(400).send({message:"To get data from this API endpoint, use POST method, passing a JSON with examID."});
 });
-router.post('/analysis', (req, res) => {
-		return res.status(501).send("Verificar se os parâmetros recebidos estão corretos; Realizar a análise dos dados com o nosso modelo; Retornar a resposta com a probabilidade de ser um quadro de aneurisma");
+router.post('/analysis', async (req, res) => {
+	const {examID} = req.body;
+	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
+
+	module.exports.examAnalysis = function(data, callback){
+		execute('python3 api/predict/brain_predict.py "' + data + '"', function(analysisResult){
+				callback({result: analysisResult});
+			});
+	};
+
+
+	try {
+		exam = await Exam.findOne({"_id": examID});
+		if(!exam) return res.status(400).send({error: "This examID does not exist"});
+		data = exam.examData;
+		analysis = await examAnalysis(data);
+		console.log(analysis);
+	}
 });
 
 // Label do exame
