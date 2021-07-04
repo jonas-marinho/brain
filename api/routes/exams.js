@@ -54,8 +54,9 @@ router.post('/analysis', async (req, res) => {
 		exam = await Exam.findOne({"_id": examID});
 		if(!exam) return res.status(400).send({error: "This examID does not exist"});
 		data = exam.examData;
-		analysis = await examAnalysis(data);
-		console.log(analysis);
+		return res.send(data);
+//		analysis = await examAnalysis(data);
+//		console.log(analysis);
 	}
 	catch (err) {
 		return res.status(500).send({error: "Error analysing exam"});
