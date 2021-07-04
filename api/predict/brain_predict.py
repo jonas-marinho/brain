@@ -83,23 +83,22 @@ full_directory = '/home/jonasmarinho/brain/api/predict'.split('/')
 directory_path = ''
 for directory_index in range(len(full_directory)):
     if directory_index >= len(current_directory):
-        if directory_path != '':
-            directory_path += '/'
-        directory_path += full_directory[directory_index]
+        directory_path += full_directory[directory_index] + '/'
+
 
 # Carregar a arquitetura do modelo classificador
-json_classifier = open('brain_classifier.json', 'r')
+json_classifier = open(directory_path + 'brain_classifier.json', 'r')
 brain_classifier = model_from_json(json_classifier.read())
 json_classifier.close()
 # Carregar os pesos do modelo classificador
-brain_classifier.load_weights("brain_classifier.h5")
+brain_classifier.load_weights(directory_path + 'brain_classifier.h5')
 
 # Carregar a arquitetura do modelo regressor
-json_regressor = open('brain_regressor.json', 'r')
+json_regressor = open(directory_path + 'brain_regressor.json', 'r')
 brain_regressor = model_from_json(json_regressor.read())
 json_regressor.close()
 # Carregar os pesos do modelo regressor
-brain_regressor.load_weights("brain_regressor.h5")
+brain_regressor.load_weights(directory_path + 'brain_regressor.h5')
 
 # Realizar as predições e retornar os valores
 classifier_prediction = brain_classifier.predict(data)[0][0][0]
