@@ -56,7 +56,10 @@ router.post('/analysis', async (req, res) => {
 		data = exam.examData;
 		analysis = await examAnalysis(data);
 		console.log(analysis);
-	};
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error analysing exam"});
+	}
 });
 
 // Label do exame
