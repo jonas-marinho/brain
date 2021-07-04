@@ -44,23 +44,24 @@ router.post('/analysis', async (req, res) => {
 	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
 
 	module.exports.examAnalysis = function(data, callback){
-		execute('python3 api/predict/brain_predict.py "' + data + '"', function(analysisResult){
+		execute('python3 api/predict/teste.py "' + data + '"', function(analysisResult){
 				callback({result: analysisResult});
 			});
 	};
 
 
 	try {
-		exam = await Exam.findOne({"_id": examID});
-		if(!exam) return res.status(400).send({error: "This examID does not exist"});
-		console.log(exam);
-		data = exam.examData;
-		return res.send(data);
-//		analysis = await examAnalysis(data);
-//		console.log(analysis);
+//		exam = await Exam.findOne({"_id": examID});
+//		if(!exam) return res.status(400).send({error: "This examID does not exist"});
+//		data = exam.examData;
+//		return res.send(data);
+		analysis = await examAnalysis(data);
+		console.log(analysis);
+		return res.send(analysis);
 	}
 	catch (err) {
-		return res.status(500).send({error: "Error analysing exam"});
+		//return res.status(500).send({error: "Error analysing exam"});
+		return res.status(500).send({error: err});
 	}
 });
 
