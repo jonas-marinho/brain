@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 // Criar novo paciente
 router.get('/create', (req, res) => {
-		return res.status(400).send({message:"To create a new patient, use the post method passing a JSON with name, cpf (only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
+		return res.status(400).send({message:"To create a new patient, use the post method passing a JSON with name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
 });
 router.post('/create', async (req, res) => {
 	const {name, cpf, birthDate, diseases, info} = req.body;
@@ -35,7 +35,7 @@ router.post('/create', async (req, res) => {
 
 // Editar paciente
 router.get('/edit', (req, res) => {
-		return res.status(400).send({message:"To edit a patient, use the post method passing a JSON with id, name, cpf (only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
+		return res.status(400).send({message:"To edit a patient, use the post method passing a JSON with id, name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
 });
 router.post('/edit', async (req, res) => {
 	const {name, cpf, birthDate, diseases, info} = req.body;
