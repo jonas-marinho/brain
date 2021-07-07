@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 const PatientSchema = new Schema({
 	name: {type: String, required: true, default: 'Patient'},
+	cpf: {type: String, required: true},
 	birthDate: {type: Date, required: true},
 	diseases: {type: Array, default: []},
 	info: {type: String, uniqueItems: true},
