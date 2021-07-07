@@ -38,7 +38,7 @@ router.get('/edit', (req, res) => {
 		return res.status(400).send({message:"To edit a patient, use the post method passing a JSON with id, name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
 });
 router.post('/edit', async (req, res) => {
-	const {name, cpf, birthDate, diseases, info} = req.body;
+	const {id, name, cpf, birthDate, diseases, info} = req.body;
 	
 	if (!id || !name || !cpf || !birthDate) return res.status(400).send({error: "There are required fields (id, name, cpf and birthDate) that are not filled"});
 	
