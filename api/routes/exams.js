@@ -28,7 +28,8 @@ router.post('/write', async (req, res) => {
 		var aneurysmLabel = false;
 		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
 		createdExam = await Exam.create({"patientID": patientID, "examData": examData, "aneurysmProb": null, "aneurysmLabel": aneurysmLabel});
-		return res.status(201).send(createdExam);
+		updatedExam = await Exam.updateOne({"_id": createdExam._id}, {"examID": createdExam._id.toString()});
+		return res.status(201).send(updatedExam);
 	}
 	catch (err) {
 		return res.status(500).send({error: "Error creating a register for the exam"});
@@ -42,14 +43,15 @@ router.get('/analysis', (req, res) => {
 router.post('/analysis', async (req, res) => {
 	const {examID} = req.body;
 	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
+console.log("Analysing exam with id:" + examID);
 	
 	try {
-		exam = await Exam.findOne({"_id": examID});
+		exam = await Exam.findOne({"examID": examID});
 		if(!exam) return res.status(400).send({error: "This examID does not exist"});
 		data = exam.examData;
 	}
 	catch (err) {
-		return res.status(500).send({error: "Error analysing exam"});
+		return res.status(500).send({error: "Error analysing exam: " + err});
 	}
 	
 	const {exec} = require("child_process");
@@ -57,8 +59,8 @@ router.post('/analysis', async (req, res) => {
 		if (error) {return res.status(500).send({error: error.message});}
 		if (stderr) {return res.status(500).send({error: stderr});}
 		const analysis = JSON.parse(stdout);
-		await Exam.updateOne({"_id": examID}, {"aneurysmProbClassifier": parseFloat(analysis.classifier), "aneurysmProbRegressor": parseFloat(analysis.regressor)});
-		updatedExam = await Exam.findOne({"_id": examID});
+		await Exam.updateOne({"examID": examID}, {"aneurysmProbClassifier": parseFloat(analysis.classifier), "aneurysmProbRegressor": parseFloat(analysis.regressor)});
+		updatedExam = await Exam.findOne({"examID": examID});
 		return res.status(200).send(updatedExam);
 	});
 });
