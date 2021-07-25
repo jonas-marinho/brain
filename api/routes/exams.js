@@ -30,7 +30,7 @@ router.post('/write', async (req, res) => {
 		createdExam = await Exam.create({"patientID": patientID, "examData": examData, "aneurysmProb": null, "aneurysmLabel": aneurysmLabel});
 		updatedExam = await Exam.updateOne({"_id": createdExam._id}, {"examID": createdExam._id.toString()});
 		createdExam = await Exam.findOne({"examID": createdExam._id.toString()});
-		return res.status(201).send(updatedExam);
+		return res.status(201).send(createdExam);
 	}
 	catch (err) {
 		return res.status(500).send({error: "Error creating a register for the exam"});
