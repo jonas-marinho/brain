@@ -101,7 +101,7 @@ json_regressor.close()
 brain_regressor.load_weights(directory_path + 'brain_regressor.h5')
 
 # Realizar as predições e retornar os valores
-classifier_prediction = brain_classifier.predict(data)[0][0][0]
+classifier_prediction = brain_classifier.predict(data)[0][0][1]
 regressor_prediction = brain_regressor.predict(data)[0][0]
 print('{"classifier":%.2f,"regressor":%.2f}' %(classifier_prediction, regressor_prediction))
 exit()
