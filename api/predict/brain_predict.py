@@ -44,7 +44,7 @@ if not verify_headers(useful_headers, data_headers):
     exit()
     
 # Verificar se os dados tem leituras o suficiente dos sinais
-if len(raw_data) < readings_number + 1:
+if len(raw_data) < readings_number:
     print('{"error":"The sent data does not have enough observations, it must have at least %i observations for each signal"}' %readings_number)
     exit()
 
