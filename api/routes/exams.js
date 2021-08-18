@@ -25,7 +25,7 @@ router.post('/write', async (req, res) => {
 	try {
 		const patient = await Patient.findOne({"_id": patientID});
 		if (!patient) return res.status(400).send({error: "The received patientID is not registered"});
-		var aneurysmLabel = false;
+		var aneurysmLabel = null;
 		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
 		createdExam = await Exam.create({"patientID": patientID, "examData": examData, "aneurysmProb": null, "aneurysmLabel": aneurysmLabel});
 		updatedExam = await Exam.updateOne({"_id": createdExam._id}, {"examID": createdExam._id.toString()});
