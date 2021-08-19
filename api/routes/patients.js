@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 router.get('/', async (req, res) => {
 	try {
 		const patients = await Patient.find({});
-console.log('Acesso realizado por ' + req.connection.remoteAddress);
 		return res.send(patients);
 	}
 	catch (err) {

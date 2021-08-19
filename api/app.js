@@ -45,7 +45,12 @@ app.use('/users', usersRoute);
 app.use('/patients', patientsRoute);
 app.use('/exams', examsRoute);
 
-//app.listen(port);
+/*
+app.listen(8000, () => {
+	console.log('HTTP Server running on port 8000');
+});
+*/
+
 const httpsServer = https.createServer({
 	        key: fs.readFileSync('brain/api/key.pem'),
 	        cert: fs.readFileSync('brain/api/cert.pem')
@@ -53,5 +58,6 @@ const httpsServer = https.createServer({
 httpsServer.listen(port, () => {
 	console.log('HTTPS Server running on port ' + port);
 });
+
 
 module.exports = app;
