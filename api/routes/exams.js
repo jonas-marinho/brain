@@ -55,7 +55,7 @@ router.post('/get', async (req, res) => {
 		
 		var aneurysmLabel = null;
 		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
-		updatedExam = await Exam.updateOne({"_id": exam._id}, {{"patientID": patientID, "aneurysmLabel": aneurysmLabel});
+		updatedExam = await Exam.updateOne({"_id": exam._id}, {"patientID": patientID, "aneurysmLabel": aneurysmLabel});
 		exam = await Exam.findOne({"_id": exam._id});
 		return res.status(201).send(exam);
 	}
