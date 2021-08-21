@@ -48,7 +48,7 @@ router.post('/get', async (req, res) => {
 		const patient = await Patient.findOne({"_id": patientID});
 		if (!patient) return res.status(400).send({error: "The received patientID is not registered"});
 		
-		const exam = await Exam.find({"deviceID": deviceID, "patientID": null}).sort("created": -1).toArray();
+		const exam = await Exam.find({"deviceID": deviceID, "patientID": null}).sort({"created": -1}).toArray();
 		if (!exam) return res.status(400).send({error: "There is no avaiable exam to register to this user"});
 		// Só considerar válido se o exame tiver sido realizado até 20 min antes
 		if(Date.now() - exam.created > (20 * 60 * 1000)) return res.status(400).send({error: "The exam for this user has expired " + (parseInt((Date.now() - exam.created) / 60000) - 20).toString() + " minutes ago"});
