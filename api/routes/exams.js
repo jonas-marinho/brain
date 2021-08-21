@@ -47,12 +47,11 @@ router.post('/get', async (req, res) => {
 		deviceID = user.deviceID;
 		const patient = await Patient.findOne({"_id": patientID});
 		if (!patient) return res.status(400).send({error: "The received patientID is not registered"});
-		
-		const exam = await Exam.find({"deviceID": deviceID, "patientID": null}).sort({"created": -1}).toArray();
-		if (!exam) return res.status(400).send({error: "There is no avaiable exam to register to this user"});
+		var exam = await Exam.find({"deviceID": deviceID, "patientID": null}).sort({"created": -1});
+		if (exam.length == 0) return res.status(400).send({error: "There is no avaiable exam to register to this user"});
+		exam = exam[0];
 		// Só considerar válido se o exame tiver sido realizado até 20 min antes
-		if(Date.now() - exam.created > (20 * 60 * 1000)) return res.status(400).send({error: "The exam for this user has expired " + (parseInt((Date.now() - exam.created) / 60000) - 20).toString() + " minutes ago"});
-		
+		if(Date.now() - exam.created > (20 * 60 * 1000)) return res.status(400).send({error: "The last exam for this user has expired " + (parseInt((Date.now() - exam.created) / 60000) - 20).toString() + " minutes ago"});
 		var aneurysmLabel = null;
 		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
 		updatedExam = await Exam.updateOne({"_id": exam._id}, {"patientID": patientID, "aneurysmLabel": aneurysmLabel});
