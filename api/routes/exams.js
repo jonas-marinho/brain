@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const router = express.Router();
 const Exam = require('../model/exam');
+const User = require('../model/user');
 const Patient = require('../model/patient');
 const bcrypt = require('bcrypt');
 
@@ -17,23 +18,49 @@ router.get('/', async (req, res) => {
 
 // Gravação de dados do exame
 router.get('/write', (req, res) => {
-	return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with patientID and examData."});
+	return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with deviceID and examData."});
 });
 router.post('/write', async (req, res) => {
-	const {patientID, examData} = req.body;
-	if (!patientID || !examData) return res.status(400).send({error: "The required fields patientID and examData are not filled"});
+	const {deviceID, examData} = req.body;
+	if (!deviceID || !examData) return res.status(400).send({error: "The required fields deviceID and examData are not filled"});
 	try {
-		const patient = await Patient.findOne({"_id": patientID});
-		if (!patient) return res.status(400).send({error: "The received patientID is not registered"});
-		var aneurysmLabel = null;
-		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
-		createdExam = await Exam.create({"patientID": patientID, "examData": examData, "aneurysmProb": null, "aneurysmLabel": aneurysmLabel});
+		createdExam = await Exam.create({"deviceID": deviceID, "examData": examData});
 		updatedExam = await Exam.updateOne({"_id": createdExam._id}, {"examID": createdExam._id.toString()});
 		createdExam = await Exam.findOne({"examID": createdExam._id.toString()});
 		return res.status(201).send(createdExam);
 	}
 	catch (err) {
 		return res.status(500).send({error: "Error creating a register for the exam"});
+	}
+});
+
+// Obtenção dos dados do exame
+router.get('/get', (req, res) => {
+	return res.status(400).send({message:"To get exam data using this API endpoint, use the POST method passing a JSON with userID and patientID."});
+});
+router.post('/get', async (req, res) => {
+	const {userID, patientID} = req.body;
+	if (!userID || !patientID) return res.status(400).send({error: "The required fields userID and patientID are not filled"});
+	try {
+		const user = await User.findOne({"_id": userID});
+		if (!user) return res.status(400).send({error: "The received user is not registered"});
+		deviceID = user.deviceID;
+		const patient = await Patient.findOne({"_id": patientID});
+		if (!patient) return res.status(400).send({error: "The received patientID is not registered"});
+		
+		const exam = await Exam.find({"deviceID": deviceID, "patientID": null}).sort("created": -1).toArray();
+		if (!exam) return res.status(400).send({error: "There is no avaiable exam to register to this user"});
+		// Só considerar válido se o exame tiver sido realizado até 20 min antes
+		if(Date.now() - exam.created > (20 * 60 * 1000)) return res.status(400).send({error: "The exam for this user has expired " + (parseInt((Date.now() - exam.created) / 60000) - 20).toString() + " minutes ago"});
+		
+		var aneurysmLabel = null;
+		if(patient.diseases.indexOf("aneurisma") >= 0) aneurysmLabel = true;
+		updatedExam = await Exam.updateOne({"_id": exam._id}, {{"patientID": patientID, "aneurysmLabel": aneurysmLabel});
+		exam = await Exam.findOne({"_id": exam._id});
+		return res.status(201).send(exam);
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error defining a patient for the exam"});
 	}
 });
 
