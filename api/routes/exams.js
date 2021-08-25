@@ -30,7 +30,7 @@ router.post('/write', async (req, res) => {
 		return res.status(201).send(createdExam);
 	}
 	catch (err) {
-		return res.status(500).send({error: "Error creating a register for the exam"});
+		return res.status(500).send({error: "Error creating a register for the exam: " + err});
 	}
 });
 
