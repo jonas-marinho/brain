@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const router = express.Router();
 const Patient = require('../model/patient');
+const Exam = require('../model/exam');
 const bcrypt = require('bcrypt');
 
 // Lista de pacientes
@@ -37,18 +38,18 @@ router.post('/create', async (req, res) => {
 
 // Editar paciente
 router.get('/edit', (req, res) => {
-		return res.status(400).send({message:"To edit a patient, use the post method passing a JSON with id, name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
+		return res.status(400).send({message:"To edit a patient, use the post method passing a JSON with patientID, name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
 });
 router.post('/edit', async (req, res) => {
-	const {id, name, cpf, birthDate, diseases, info} = req.body;
+	const {patientID, name, cpf, birthDate, diseases, info} = req.body;
 	
-	if (!id || !name || !cpf || !birthDate) return res.status(400).send({error: "There are required fields (id, name, cpf and birthDate) that are not filled"});
+	if (!patientID || !name || !cpf || !birthDate) return res.status(400).send({error: "There are required fields (patientID, name, cpf and birthDate) that are not filled"});
 	
 	try {
-		var editedPatient = await Patient.findOne({"_id": id});
-		if(!editedPatient) return res.status(400).send({error: "This patient id does not exist"});
-		await Patient.updateOne({"_id": id}, {name: name, cpf: cpf, birthDate: birthDate, diseases: diseases, info: info});
-		editedPatient = await Patient.findOne({"_id": id});
+		var editedPatient = await Patient.findOne({"patientID": patientID});
+		if(!editedPatient) return res.status(400).send({error: "This patientID does not exist"});
+		await Patient.updateOne({"patientID": patientID}, {name: name, cpf: cpf, birthDate: birthDate, diseases: diseases, info: info});
+		editedPatient = await Patient.findOne({"patientID": patientID});
 		return res.status(202).send(editedPatient);
 	}
 	catch (err) {
@@ -58,17 +59,17 @@ router.post('/edit', async (req, res) => {
 
 // Excluir paciente
 router.get('/delete', (req, res) => {
-		return res.status(400).send({message:"To delete a patient, use the post method passing a JSON with id"});
+		return res.status(400).send({message:"To delete a patient, use the post method passing a JSON with patientID"});
 });
 router.post('/delete', async (req, res) => {
-	const {id} = req.body;
+	const {patientID} = req.body;
 	
-	if (!id) return res.status(400).send({error: "The required field id is not filled"});
+	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
 	
 	try {
-		var deletedPatient = await Patient.findOne({"_id": id});
-		if(!deletedPatient) return res.status(400).send({error: "This patient id does not exist"});
-		await Patient.deleteOne({"_id": id});
+		var deletedPatient = await Patient.findOne({"patientID": patientID});
+		if(!deletedPatient) return res.status(400).send({error: "This patientID does not exist"});
+		await Patient.deleteOne({"patientID": patientID});
 		return res.status(202).send(deletedPatient);
 	}
 	catch (err) {
@@ -79,6 +80,21 @@ router.post('/delete', async (req, res) => {
 // Lista de exames do paciente
 router.get('/exams', (req, res) => {
 		return res.status(400).send({message:"To list the exams of a patient, use the post method passing a JSON with patientID"});
+});
+router.post('/exams', (req, res) => {
+	const {patientID} = req.body;
+	
+	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
+	
+	try {
+		const patient = await Patient.findOne({"patientID": patientID});
+		if(!patient) return res.status(400).send({error: "This patientID does not exist"});
+		const exams = await Exam.find({"patientID":patientID});
+		return res.send(exams);
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error getting patient exams"});
+	}
 });
 
 module.exports = router;
