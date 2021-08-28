@@ -81,7 +81,7 @@ router.post('/delete', async (req, res) => {
 router.get('/exams', (req, res) => {
 		return res.status(400).send({message:"To list the exams of a patient, use the post method passing a JSON with patientID"});
 });
-router.post('/exams', (req, res) => {
+router.post('/exams', async (req, res) => {
 	const {patientID} = req.body;
 	
 	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
