@@ -30,7 +30,7 @@ raw_data = data_rows
 # Definir as colunas de entrada que são úteis
 useful_headers = ['H.A','L.A','H.B','L.B','M.G','L.G','THE','DEL']
 # Definir o número de leituras que o modelo utiliza para fazer a predição
-readings_number = 250
+readings_number = 100
 
 # Verificar se as colunas necessárias estão presentes entre cabeçalhos
 data_headers = raw_data[0]
@@ -48,8 +48,8 @@ if len(raw_data) < readings_number:
     print('{"error":"The sent data does not have enough observations, it must have at least %i observations for each signal"}' %readings_number)
     exit()
 
-# Padronizar para os dados tenham o shape para o qual o modelo foi treinado, que é (1,250,16)
-# (1 amostra, 250 medições, 16 canais (8 de entrada e 8 calculados))
+# Padronizar para os dados tenham o shape para o qual o modelo foi treinado, que é (1,100,16)
+# (1 amostra, 100 medições, 16 canais (8 de entrada e 8 calculados))
 # Selecionar apenas as linhas necessárias
 if len(raw_data) > readings_number:
     raw_data = raw_data[int(len(raw_data)/4):int(len(raw_data)/4)+readings_number]
