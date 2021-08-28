@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
 // Gravação de dados do exame
 router.get('/write', (req, res) => {
-	return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with deviceID and examData."});
+	return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with deviceID and examData. To model be able to predict, the examData must have at least 100 readings."});
 });
 router.post('/write', async (req, res) => {
 	const {deviceID, examData} = req.body;
