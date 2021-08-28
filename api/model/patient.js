@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const PatientSchema = new Schema({
+	patientID: {type: String, default: null},
 	name: {type: String, required: true, default: 'Patient'},
 	cpf: {type: String, required: true},
 	birthDate: {type: Date, required: true},

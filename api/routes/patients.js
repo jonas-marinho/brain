@@ -25,6 +25,8 @@ router.post('/create', async (req, res) => {
 	
 	try {
 		createdPatient = await Patient.create({name: name, cpf: cpf, birthDate: birthDate, diseases: diseases, info: info});
+		updatedPatient = await Patient.updateOne({"_id": createdPatient._id}, {"patientID": createdPatient._id.toString()});
+		createdPatient = await Patient.findOne({"patientID": createdPatient._id.toString()});
 		return res.status(201).send(createdPatient);
 	}
 	catch (err) {
@@ -72,6 +74,11 @@ router.post('/delete', async (req, res) => {
 	catch (err) {
 		return res.status(500).send({error: "Error excluding patient"});
 	}
+});
+
+// Lista de exames do paciente
+router.get('/exams', (req, res) => {
+		return res.status(400).send({message:"To list the exams of a patient, use the post method passing a JSON with patientID"});
 });
 
 module.exports = router;
