@@ -50,6 +50,7 @@ router.post('/create', async (req, res) => {
 	
 	try {
 		user = await User.findOne({"email":email});
+console.log(user);
 		if(user) return res.status(400).send({error: "The user already exists"});
 		
 		createdUser = await User.create({email: email, password: password, name:name});
