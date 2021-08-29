@@ -23,7 +23,7 @@ router.post('/auth', async (req, res) => {
 	if (!email || !password) return res.status(400).send({ error: 'Send an email and a password' });
 	
 	try {
-		const user = await User.findOne({email}).select('+password');
+		const user = await User.findOne({"email":email}).select('+password');
 		if (!user) return res.status(401).send({ error: 'This email is not registered' });
 		
 		const rightPassword = await bcrypt.compare(password, user.password);
@@ -51,14 +51,16 @@ router.post('/create', async (req, res) => {
 	try {
 		user = await User.findOne({"email":email});
 console.log(user);
-		if(user == null) return res.status(400).send({error: "The user already exists"});
+		if(user) return res.status(400).send({error: "The user already exists"});
+console.log("O usuário não existia ainda");
 		
-		createdUser = await User.create({email: email, password: password, name:name});
+		createdUser = await User.create({"email": email, "password": password, "name":name});
+console.log("Criou o usuário");
 		createdUser.password = undefined;
 		return res.status(201).send(createdUser);
 	}
 	catch (err) {
-		return res.status(500).send({error: "Error searching for user"});
+		return res.status(500).send({error: "Error searching for user: " + err});
 	}
 });
 
