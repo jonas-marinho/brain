@@ -49,7 +49,8 @@ router.post('/create', async (req, res) => {
 	if (!email || !password || !name) return res.status(400).send({error: "There are required fields that are not filled"});
 	
 	try {
-		if(await User.findOne({"email":email})) return res.status(400).send({error: "The user already exists"});
+		user = await User.findOne({"email":email});
+		if(user) return res.status(400).send({error: "The user already exists"});
 		
 		createdUser = await User.create({email: email, password: password, name:name});
 		createdUser.password = undefined;
