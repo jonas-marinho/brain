@@ -41,15 +41,15 @@ router.post('/auth', async (req, res) => {
 
 // Criar novo usuário
 router.get('/create', (req, res) => {
-		return res.status(400).send({message:"To create a new user, use the post method passing a JSON with name, password and name"});
+		return res.status(400).send({message:"To create a new user, use the post method passing a JSON with email, password and name"});
 });
 router.post('/create', async (req, res) => {
 	const {email, password, name} = req.body;
 	
-	if (!email || !password || !name) return res.status(400).send({error: "There are fields that are not filled"});
+	if (!email || !password || !name) return res.status(400).send({error: "There are required fields that are not filled"});
 	
 	try {
-		if(await User.findOne({email})) return res.status(400).send({error: "The user already exists"});
+		if(await User.findOne({"email":email})) return res.status(400).send({error: "The user already exists"});
 		
 		createdUser = await User.create({email: email, password: password, name:name});
 		createdUser.password = undefined;
