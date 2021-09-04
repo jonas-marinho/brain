@@ -23,6 +23,8 @@ router.get('/write', (req, res) => {
 router.post('/write', async (req, res) => {
 	const {deviceID, examData} = req.body;
 	if (!deviceID || !examData) return res.status(400).send({error: "The required fields deviceID and examData are not filled"});
+// Remover o ';' do último registro se houver
+	if(examData[examData.length-1] == ';') examData = examData.substr(0, examData.length-1);
 	try {
 		createdExam = await Exam.create({"deviceID": deviceID, "examData": examData});
 		updatedExam = await Exam.updateOne({"_id": createdExam._id}, {"examID": createdExam._id.toString()});

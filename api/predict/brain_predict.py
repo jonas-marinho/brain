@@ -24,7 +24,8 @@ else:
 raw_data = raw_data.split(';')
 data_rows = []
 for row in raw_data:
-    data_rows.append(row.split(','))
+    if row != "":
+        data_rows.append(row.split(','))
 raw_data = data_rows
 
 # Definir as colunas de entrada que são úteis
