@@ -21,7 +21,7 @@ router.get('/write', (req, res) => {
 	return res.status(400).send({message:"To save data using this API endpoint, use the POST method passing a JSON with deviceID and examData. To model be able to predict, the examData must have at least 100 readings."});
 });
 router.post('/write', async (req, res) => {
-	const {deviceID, examData} = req.body;
+	var {deviceID, examData} = req.body;
 	if (!deviceID || !examData) return res.status(400).send({error: "The required fields deviceID and examData are not filled"});
 // Remover o ';' do último registro se houver
 	if(examData[examData.length-1] == ';') examData = examData.substr(0, examData.length-1);
