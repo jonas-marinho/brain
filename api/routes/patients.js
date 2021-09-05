@@ -97,4 +97,26 @@ router.post('/exams', async (req, res) => {
 	}
 });
 
+// Último exame do paciente
+router.get('/last-exam', (req, res) => {
+		return res.status(400).send({message:"To get the last exam of a patient, use the post method passing a JSON with patientID"});
+});
+router.post('/last-exam', async (req, res) => {
+	const {patientID} = req.body;
+	
+	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
+	
+	try {
+		const patient = await Patient.findOne({"patientID": patientID});
+		if(!patient) return res.status(400).send({error: "This patientID does not exist"});
+		const exams = await Exam.find({"patientID":patientID}).sort({"created":-1});
+		var exam = Array();
+		if(exams.length>0) exam = exams[0];
+		return res.send(exam);
+	}
+	catch (err) {
+		return res.status(500).send({error: "Error getting patient last exam"});
+	}
+});
+
 module.exports = router;
