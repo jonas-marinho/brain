@@ -41,7 +41,7 @@ router.post('/write', async (req, res) => {
 router.get('/get', (req, res) => {
 	return res.status(400).send({message:"To get exam data using this API endpoint, use the POST method passing a JSON with userID and patientID."});
 });
-router.post('/get', async (req, res) => {
+router.post('/get', auth, async (req, res) => {
 	const {userID, patientID} = req.body;
 	if (!userID || !patientID) return res.status(400).send({error: "The required fields userID and patientID are not filled"});
 	try {
@@ -70,7 +70,7 @@ router.post('/get', async (req, res) => {
 router.get('/analysis', (req, res) => {
 		return res.status(400).send({message:"To get data from this API endpoint, use POST method, passing a JSON with examID."});
 });
-router.post('/analysis', async (req, res) => {
+router.post('/analysis', auth, async (req, res) => {
 	const {examID} = req.body;
 	if(!examID) return res.status(400).send({error: "The required field examID is not filled"});
 console.log("Analysing exam with id:" + examID);
@@ -99,7 +99,7 @@ console.log("Analysing exam with id:" + examID);
 router.get('/label', (req, res) => {
 	return res.status(400).send({message:"To update the aneurysmLabel of the exam, use the POST method passing a JSON with examID and newLabel (boolean)."});
 });
-router.post('/label', async (req, res) => {
+router.post('/label', auth, async (req, res) => {
 	const {examID, newLabel} = req.body;
 	if(!examID || newLabel == undefined) return res.status(400).send({error: "The required fields examID and newLabel are not filled"});
 	

@@ -4,15 +4,18 @@ const config = () => {
 	switch (env) {
 		case 'dev':
 		return {
-			bd_string: 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority'
+			bd_string: 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority',
+			jwt_password: 'brain'
 		}
 		case 'hml':
 		return {
-			bd_string: 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority'			
+			bd_string: 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority',
+			jwt_password: 'brain'
 		}
 		case 'prod':
 		return {
-			bd_string: 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority'
+			bd_string: 'mongodb+srv://jonas:RL2rwkIJCTu3NPGs@brain-mongodb.vyjft.mongodb.net/brain?retryWrites=true&w=majority',
+			jwt_password: 'brain'
 		}
 	}
 }

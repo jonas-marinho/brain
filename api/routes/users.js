@@ -3,9 +3,11 @@ const router = express.Router();
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const auth = require('../middlewares/auth');
+const config = require('../config/config');
 
 // Lista de usuários
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 	try {
 		const users = await User.find({});
 		return res.send(users);
@@ -35,7 +37,7 @@ router.post('/auth', async (req, res) => {
 		Object.keys(user['_doc']).forEach((item, index, arr) => {
 			if(item != 'password') authUser[item] = user['_doc'][item];
 		});
-		authUser['token'] = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
+		authUser['token'] = jwt.sign({id:user.id}, config.jwt_password, {expiresIn:'1d'});
 		return res.status(202).send(authUser);		
     }
 	catch (err) {
@@ -47,7 +49,7 @@ router.post('/auth', async (req, res) => {
 router.get('/create', (req, res) => {
 		return res.status(400).send({message:"To create a new user, use the post method passing a JSON with email, password and name"});
 });
-router.post('/create', async (req, res) => {
+router.post('/create', auth, async (req, res) => {
 	const {email, password, name} = req.body;
 	
 	if (!email || !password || !name) return res.status(400).send({error: "There are required fields that are not filled"});

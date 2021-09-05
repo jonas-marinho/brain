@@ -3,9 +3,10 @@ const router = express.Router();
 const Patient = require('../model/patient');
 const Exam = require('../model/exam');
 const bcrypt = require('bcrypt');
+const auth = require('../middlewares/auth');
 
 // Lista de pacientes
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 	try {
 		const patients = await Patient.find({});
 		return res.send(patients);
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
 router.get('/create', (req, res) => {
 		return res.status(400).send({message:"To create a new patient, use the post method passing a JSON with name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
 });
-router.post('/create', async (req, res) => {
+router.post('/create', auth, async (req, res) => {
 	const {name, cpf, birthDate, diseases, info} = req.body;
 	
 	if (!name || !cpf || !birthDate) return res.status(400).send({error: "There are required fields (name, cpf and birthDate) that are not filled"});
@@ -40,7 +41,7 @@ router.post('/create', async (req, res) => {
 router.get('/edit', (req, res) => {
 		return res.status(400).send({message:"To edit a patient, use the post method passing a JSON with patientID, name, cpf (string with only numbers), birthDate (YYYY-MM-DD), diseases (array of strings) and info (string)"});
 });
-router.post('/edit', async (req, res) => {
+router.post('/edit', auth, async (req, res) => {
 	const {patientID, name, cpf, birthDate, diseases, info} = req.body;
 	
 	if (!patientID || !name || !cpf || !birthDate) return res.status(400).send({error: "There are required fields (patientID, name, cpf and birthDate) that are not filled"});
@@ -61,7 +62,7 @@ router.post('/edit', async (req, res) => {
 router.get('/delete', (req, res) => {
 		return res.status(400).send({message:"To delete a patient, use the post method passing a JSON with patientID"});
 });
-router.post('/delete', async (req, res) => {
+router.post('/delete', auth, async (req, res) => {
 	const {patientID} = req.body;
 	
 	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
@@ -81,7 +82,7 @@ router.post('/delete', async (req, res) => {
 router.get('/exams', (req, res) => {
 		return res.status(400).send({message:"To list the exams of a patient, use the post method passing a JSON with patientID"});
 });
-router.post('/exams', async (req, res) => {
+router.post('/exams', auth, async (req, res) => {
 	const {patientID} = req.body;
 	
 	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
@@ -101,7 +102,7 @@ router.post('/exams', async (req, res) => {
 router.get('/last-exam', (req, res) => {
 		return res.status(400).send({message:"To get the last exam of a patient, use the post method passing a JSON with patientID"});
 });
-router.post('/last-exam', async (req, res) => {
+router.post('/last-exam', auth, async (req, res) => {
 	const {patientID} = req.body;
 	
 	if (!patientID) return res.status(400).send({error: "The required field patientID is not filled"});
