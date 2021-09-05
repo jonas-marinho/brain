@@ -4,9 +4,10 @@ const Exam = require('../model/exam');
 const User = require('../model/user');
 const Patient = require('../model/patient');
 const bcrypt = require('bcrypt');
+const auth = require('../middlewares/auth');
 
 // Lista de exames
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 	try {
 		const exams = await Exam.find({});
 		return res.send(exams);
