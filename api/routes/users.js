@@ -24,17 +24,20 @@ router.post('/auth', async (req, res) => {
 	if (!email || !password) return res.status(400).send({ error: 'Send an email and a password' });
 	
 	try {
-		var user = await User.findOne({"email":email}).select('+password');
+		const user = await User.findOne({"email":email}).select('+password');
 		if (!user) return res.status(401).send({ error: 'This email is not registered' });
 		
 		const rightPassword = await bcrypt.compare(password, user.password);
 		
 		if(!rightPassword) return res.status(401).send({ error: 'The password is wrong' });
 		
-		user.password = undefined;
-		user['token'] = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
-		user['token2'] = 'teste';
-		return res.status(202).send(user);		
+		authUser = {};
+		Object.keys(user).forEach((item, index, arr) => {
+			if(item != 'password') authUser[item] = user[item];
+		});
+		authUser['token'] = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
+		authUser['token2'] = 'teste';
+		return res.status(202).send(authUser);		
     }
 	catch (err) {
 		return res.status(500).send({ error: 'Error finding user' });
