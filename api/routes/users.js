@@ -32,11 +32,10 @@ router.post('/auth', async (req, res) => {
 		if(!rightPassword) return res.status(401).send({ error: 'The password is wrong' });
 		
 		authUser = {};
-		Object.keys(user).forEach((item, index, arr) => {
-			if(item != 'password') authUser[item] = user[item];
+		Object.keys(user['_doc']).forEach((item, index, arr) => {
+			if(item != 'password') authUser[item] = user['_doc'][item];
 		});
 		authUser['token'] = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
-		authUser['token2'] = 'teste';
 		return res.status(202).send(authUser);		
     }
 	catch (err) {
