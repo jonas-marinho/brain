@@ -2,6 +2,7 @@
 const router = express.Router();
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Lista de usuários
 router.get('/', async (req, res) => {
@@ -23,7 +24,7 @@ router.post('/auth', async (req, res) => {
 	if (!email || !password) return res.status(400).send({ error: 'Send an email and a password' });
 	
 	try {
-		const user = await User.findOne({"email":email}).select('+password');
+		var user = await User.findOne({"email":email}).select('+password');
 		if (!user) return res.status(401).send({ error: 'This email is not registered' });
 		
 		const rightPassword = await bcrypt.compare(password, user.password);
@@ -31,6 +32,7 @@ router.post('/auth', async (req, res) => {
 		if(!rightPassword) return res.status(401).send({ error: 'The password is wrong' });
 		
 		user.password = undefined;
+		user.token = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
 		return res.status(202).send(user);
 		
     }
