@@ -32,9 +32,9 @@ router.post('/auth', async (req, res) => {
 		if(!rightPassword) return res.status(401).send({ error: 'The password is wrong' });
 		
 		user.password = undefined;
-		user.token = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
-		return res.status(202).send(user);
-		
+		user['token'] = jwt.sign({id:user.id}, 'brain', {expiresIn:'1d'});
+		user['token2'] = 'teste';
+		return res.status(202).send(user);		
     }
 	catch (err) {
 		return res.status(500).send({ error: 'Error finding user' });
